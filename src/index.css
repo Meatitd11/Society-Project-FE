@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  box-sizing: border-box;
+}
+body{
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+  
+  :root{
+    --primary-color: #016F28;
+    --secondary-color: #2ecc71;
+    --background-color: #f5f5f5;
+  }
+  
+  .primary-color{
+  color: var(--primary-color);
+  }
+  
+  
+  .authentication{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+    url('../src/assets/images/bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .relative:hover .absolute {
+    display: block;
+  }
+  
+  .absolute {
+    display: none;
+    z-index: 10;
+  }
