@@ -17,12 +17,7 @@ const IndexPage = () => {
 
   return (
     <div className='authentication min-h-screen flex flex-col justify-center items-center'>
-      <button
-              onClick={() => navigate('/admin098')}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg  transition-colors duration-300 font-medium"
-            >
-              Admin
-            </button>
+     
       <div className="text-center mt-[2rem]">
         <h1 className='text-white text-5xl mb-6 font-bold'>گلِ دامن سوسائٹی</h1>
         <h2 className='text-white text-2xl mb-8'>مینجمنٹ اکاؤنٹ گروپ آفیسر کوآپریٹو سوسائٹی</h2>
@@ -70,6 +65,12 @@ const IndexPage = () => {
               className="px-6 py-3 bg-green-600 text-white rounded-lg  transition-colors duration-300 font-medium"
             >
               Tenant Login
+            </button>
+             <button
+              onClick={() => navigate('/admin098')}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg  transition-colors duration-300 font-medium"
+            >
+              Admin
             </button>
           </div>
         </div>
