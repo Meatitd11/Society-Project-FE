@@ -1,19 +1,19 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const IndexPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
-  useEffect(() => {
-    // Check if the current path matches admin codes
-    const currentPath = location.pathname;
+  // useEffect(() => {
+  //   // Check if the current path matches admin codes
+  //   const currentPath = location.pathname;
     
-    if (currentPath === '/admin098#' || currentPath === '/superAdmin032#') {
-      // If user navigated directly to these URLs, redirect to login
-      navigate('/login');
-    }
-  }, [location.pathname, navigate]);
+  //   if (currentPath === '/admin098#' || currentPath === '/superAdmin032#') {
+  //     // If user navigated directly to these URLs, redirect to login
+  //     navigate('/login');
+  //   }
+  // }, [location.pathname, navigate]);
 
   return (
     <div className='authentication min-h-screen flex flex-col justify-center items-center'>

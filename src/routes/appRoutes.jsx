@@ -66,7 +66,7 @@ const AppRoutes = () => {
         <Route path="/" element={<IndexPage />} />
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/admin098" element={<Login/>} />
-        <Route path="/superAdmin032" element={<Login/>} />
+        {/* <Route path="/superAdmin032" element={<Login/>} /> */}
         <Route path="/user-login" element={<UserLogin/>} />
 
         {/* Private Routes - All dashboard routes nested under /dashboard */}
