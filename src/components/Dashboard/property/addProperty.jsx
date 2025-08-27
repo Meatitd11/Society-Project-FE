@@ -243,7 +243,7 @@ const AddProperty = () => {
               name="property_name"
               value={propertyData.property_name}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             />
           </div>
@@ -273,7 +273,7 @@ const AddProperty = () => {
               name="building_name"
               value={propertyData.building_name}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             />
           </div>
@@ -317,7 +317,7 @@ const AddProperty = () => {
               name="unit_type"
               value={propertyData.unit_type}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             >
               <option value="">Select Unit Type</option>
@@ -336,7 +336,7 @@ const AddProperty = () => {
               name="floor"
               value={propertyData.floor}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             >
               <option value="">Select Floor</option>
@@ -356,7 +356,7 @@ const AddProperty = () => {
               name="number_of_bedrooms"
               value={propertyData.number_of_bedrooms}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             />
           </div>
@@ -369,7 +369,7 @@ const AddProperty = () => {
               name="number_of_bathrooms"
               value={propertyData.number_of_bathrooms}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             />
           </div>
@@ -412,7 +412,7 @@ const AddProperty = () => {
               name="number_of_halls"
               value={propertyData.number_of_halls}
               onChange={handleChange}
-              required
+              
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-sm focus:ring-0 focus:outline-none focus:border-green-700"
             />
           </div>
@@ -456,7 +456,7 @@ const AddProperty = () => {
                 value={propertyData.property_value}
                 onChange={handleChange}
                 className="w-full text-sm px-4 py-2 border border-gray-300 rounded-r-sm focus:ring-0 focus:outline-none focus:border-green-700"
-                required
+                
               >
                 <option value="">Select Currency</option>
                 {currencies.map(currency => (
