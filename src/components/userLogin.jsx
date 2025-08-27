@@ -1,8 +1,9 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import useAuth from '../hooks/useAuth'; 
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const Login = () => {
+const UserLogin = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
@@ -12,12 +13,30 @@ const Login = () => {
   
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    console.log('Login attempt with:', { phone, password, role });
+    
     try {
       const data = await login(phone, password, role);
-      console.log('Login successful:', data);
-      navigate('/dashboard');
+      console.log('User login successful:', data);
+      
+      // Navigate based on role selection - only owner and renter allowed
+      if (role === 'owner' || role === 'renter') {
+        console.log(`${role} login successful, navigating to user dashboard`);
+        
+        // Store user role in localStorage for use in components
+        localStorage.setItem('userRole', role);
+        localStorage.setItem('userPhone', phone);
+        
+        toast.success(`login successful`);
+        navigate('/user-dashboard');
+      } else {
+        console.error('Unauthorized role for user dashboard access:', role);
+        // Don't navigate - stay on login page for unauthorized roles
+      }
     } catch (err) {
-      console.error('Login failed:', err.message); 
+      console.error('User login failed:', err.message);
+      // Error is already set in the useAuth hook
     }
   };
 
@@ -31,7 +50,7 @@ const Login = () => {
         </div>
 
         <form onSubmit={handleLogin} className='p-5'>
-         <div className="mb-6">
+          <div className="mb-6">
             <select
               id="role"
               name="role"
@@ -40,9 +59,8 @@ const Login = () => {
               required
               className="w-full text-sm px-4 py-2 border border-gray-300 rounded-md focus:ring-0 focus:outline-none focus:border-green-700">
               <option value="" disabled>Select your role</option>
-              <option value="employee">Employee</option>
-              <option value="admin">Admin</option>
-              <option value="super_admin">Super Admin</option>
+              <option value="owner">Owner</option>
+              <option value="renter">Tenant </option>
             </select>
           </div>
           
@@ -72,8 +90,6 @@ const Login = () => {
             />
           </div>
 
-         
-
           <button
             type="submit"
             disabled={loading}
@@ -93,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default UserLogin;

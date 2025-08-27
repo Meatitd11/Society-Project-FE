@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import Modal from '../modal';
 import useProperty from '../../../hooks/useProperty';
@@ -8,9 +8,10 @@ import useUnitType from '../../../hooks/useUnitType';
 import usePropertyType from '../../../hooks/usePropertyType';
 import useAreaType from '../../../hooks/useAreaType';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const PropertyList = () => {
-  const { properties, deleteProperty, editProperty, loading, fetchProperties, countries, cities, fetchCities, floors, fetchFloors } = useProperty();
+  const { properties, deleteProperty, editProperty, loading, fetchProperties, fetchCities, floors, fetchFloors } = useProperty();
   const { blocks, fetchBlocks } = useBlock();
   const { amenities, fetchAmenities } = useAmenity();
   const { unitTypes, fetchUnitTypes } = useUnitType();
@@ -124,10 +125,10 @@ const PropertyList = () => {
     setSelectedProperty(property);
     setEditPropertyData({
       block_name: property.block_name?.id,
+        property_number: property.property_number,
       building_name: property.building_name,
       property_name: property.property_name,
       property_type: property.property_type?.pro_type_id,
-      property_number: property.property_number,
       unit_type: property.unit_type?.unit_type_id,
       floor: property.floor?.id,
       number_of_bedrooms: property.number_of_bedrooms,
@@ -285,16 +286,28 @@ const PropertyList = () => {
                   <span className="ml-1">{getSortIcon('property_id')}</span>
                 </div>
               </th>
+               <th className="border px-4 py-2 whitespace-nowrap">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('property_number')}>
+                  <span>Property Number</span>
+                  <span className="ml-1">{getSortIcon('property_number')}</span>
+                </div>
+              </th>
               <th className="border px-4 py-2 whitespace-nowrap">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('property_name')}>
                   <span>Property Name</span>
                   <span className="ml-1">{getSortIcon('property_name')}</span>
                 </div>
               </th>
-              <th className="border px-4 py-2 whitespace-nowrap">
-                <div className="flex items-center cursor-pointer" onClick={() => requestSort('property_number')}>
-                  <span>Property Number</span>
-                  <span className="ml-1">{getSortIcon('property_number')}</span>
+               <th className="border px-4 py-2 whitespace-nowrap">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('property_type')}>
+                  <span>Property Type</span>
+                  <span className="ml-1">{getSortIcon('property_type')}</span>
+                </div>
+              </th>
+               <th className="border px-4 py-2 whitespace-nowrap">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('floor')}>
+                  <span>Floor</span>
+                  <span className="ml-1">{getSortIcon('floor')}</span>
                 </div>
               </th>
               <th className="border px-4 py-2 whitespace-nowrap">
@@ -303,24 +316,13 @@ const PropertyList = () => {
                   <span className="ml-1">{getSortIcon('block_name')}</span>
                 </div>
               </th>
-              <th className="border px-4 py-2 whitespace-nowrap">
-                <div className="flex items-center cursor-pointer" onClick={() => requestSort('property_type')}>
-                  <span>Property Type</span>
-                  <span className="ml-1">{getSortIcon('property_type')}</span>
-                </div>
-              </th>
-              <th className="border px-4 py-2 whitespace-nowrap">
+              {/* <th className="border px-4 py-2 whitespace-nowrap">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('unit_type')}>
                   <span>Unit Type</span>
                   <span className="ml-1">{getSortIcon('unit_type')}</span>
                 </div>
-              </th>
-              <th className="border px-4 py-2 whitespace-nowrap">
-                <div className="flex items-center cursor-pointer" onClick={() => requestSort('floor')}>
-                  <span>Floor</span>
-                  <span className="ml-1">{getSortIcon('floor')}</span>
-                </div>
-              </th>
+              </th> */}
+             
               <th className="border px-4 py-2 whitespace-nowrap">Actions</th>
             </tr>
           </thead>
@@ -329,16 +331,14 @@ const PropertyList = () => {
               currentProperties.map((property, index) => (
                 <tr key={property.property_id}>
                   <td className="border px-4 py-2">{indexOfFirstItem + index + 1}</td>
-                  <td className="border px-4 py-2">{property.property_name}</td>
                   <td className="border px-4 py-2">{property.property_number}</td>
-                  <td className="border px-4 py-2">{property.block_name?.block_name || 'N/A'}</td>
+                  <td className="border px-4 py-2">{property.property_name}</td>
                   <td className="border px-4 py-2">{property.property_type?.property_name || 'N/A'}</td>
-                  <td className="border px-4 py-2">
+                  <td className="border px-4 py-2"> {property.floor?.name || 'N/A'}</td>
+                  <td className="border px-4 py-2">{property.block_name?.block_name || 'N/A'}</td>
+                  {/* <td className="border px-4 py-2">
                     {property.unit_type ? `${property.unit_type.unit_number} - ${property.unit_type.unit_name}` : 'N/A'}
-                  </td>
-                  <td className="border px-4 py-2">
-                    {property.floor?.name || 'N/A'}
-                  </td>
+                  </td> */}
                   <td className="border px-4 py-2">
                     <div className="flex space-x-2">
                       <button 
@@ -858,7 +858,7 @@ const PropertyList = () => {
       {/* Delete Modal */}
       <Modal isVisible={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <h2 className="text-xl mb-4">Confirm Delete</h2>
-        <p>Are you sure you want to delete property "{selectedProperty?.property_name}"?</p>
+        <p>Are you sure you want to delete property `{selectedProperty?.property_name}`?</p>
         <div className="flex space-x-4 mt-4">
           <button
             onClick={handleDeleteProperty}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useManagementCommittee from '../../../hooks/useManagementCommittee';
 import useMemberType from '../../../hooks/useMemberType';
 import { toast } from 'react-toastify';

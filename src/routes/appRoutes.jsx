@@ -1,11 +1,13 @@
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import IndexPage from '../components/indexPage';
 import Login from '../components/login';
+import UserLogin from '../components/userLogin';
+
 import Main from '../components/Dashboard/main';
+import UserMain from '../components/UserDashboard/userMain';
 import PrivateRoute from './privateRoutes';
 
 // Import all dashboard components
-import Dashboard from "../components/Dashboard/dashboard";
 import Invoice from "../components/invoice";
 import Receipt from "../components/receipt";
 import BlockList from "../components/Dashboard/block/blockList";
@@ -42,7 +44,7 @@ import PaymentsList from "../components/Dashboard/paymentCollection/paymentsList
 import PaymentsAdd from "../components/Dashboard/paymentCollection/paymentsAdd";
 import PlotSplitter from "../components/Dashboard/plotSplitter/PlotSplitter";
 import ComplaintList from "../components/Dashboard/complaint/complaintList";
-import AddComplaint from "../components/Dashboard/complaint/AddComplaint";
+import AddComplaint from "../components/Dashboard/complaint/addComplaint";
 import FineList from "../components/Dashboard/fine/fineList";
 import AddFine from "../components/Dashboard/fine/addFine";
 import ReportList from "../components/Dashboard/reports/reports";
@@ -50,15 +52,25 @@ import DashboardOverview from '../components/Dashboard/dashboardOverview';
 import AddCurrency from '../components/Dashboard/currency/addCurrency';
 import CurrencyList from '../components/Dashboard/currency/currencyList';
 
+// User Dashboard Components
+import UserDashboardOverview from '../components/UserDashboard/userDashboardOverview';
+import UserBillingDetails from '../components/UserDashboard/billingDetails/billingDetails';
+import UserComplaintList from "../components/UserDashboard/complaint/complaintList";
+import UserAddComplaint from "../components/UserDashboard/complaint/addComplaint";
+
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Login />} />
-        
+        {/* Public Routes - Index page as default */}
+        <Route path="/" element={<IndexPage />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/admin098" element={<Login/>} />
+        <Route path="/superAdmin032" element={<Login/>} />
+        <Route path="/user-login" element={<UserLogin/>} />
+
         {/* Private Routes - All dashboard routes nested under /dashboard */}
-        <Route path="/dashboard" element={<PrivateRoute><Main /></PrivateRoute>}>
+         <Route path="/dashboard" element={<PrivateRoute><Main /></PrivateRoute>}>
           <Route index element={<DashboardOverview/>} />
           <Route path=":activeTab" element={<DashboardOverview />} />
           
@@ -141,6 +153,23 @@ const AppRoutes = () => {
           
           {/* Reports */}
           <Route path="report-list" element={<ReportList />} />
+        </Route>
+
+        {/* User Dashboard Routes - Simplified to only show Dashboard, Billing, and Complaints */}
+        <Route path="/user-dashboard" element={<UserMain />}>
+          <Route index element={<UserDashboardOverview/>} />
+          <Route path=":activeTab" element={<UserDashboardOverview />} />
+          
+          {/* Invoice and Receipt */}
+          <Route path="invoice" element={<Invoice />} />
+          <Route path="receipt" element={<Receipt />} />
+          
+          {/* Billing */}
+          <Route path="billing-details" element={<UserBillingDetails />} />
+          
+          {/* Complaints */}
+          <Route path="complaint-list" element={<UserComplaintList />} />
+          <Route path="add-complaint" element={<UserAddComplaint />} />
         </Route>
       </Routes>
     </Router>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useAreaType from '../../../hooks/useAreaType';
 import { useNavigate } from 'react-router-dom';
 

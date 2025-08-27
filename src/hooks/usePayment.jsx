@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import useBlock from './useBlock';
+import API_BASE_URL from '../config';
 
 const usePayments = () => {
   const [paymentData, setPaymentData] = useState({
@@ -49,7 +50,7 @@ useEffect(() => {
 
   const fetchForms = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/form-builder');
+      const response = await axios.get(`${API_BASE_URL}/form-builder/`);
       setForms(response.data);
     } catch (error) {
       toast.error('Error fetching forms');
@@ -107,7 +108,7 @@ useEffect(() => {
 const fetchBalance = async (propertyNumber) => {
   try {
     const res = await axios.get(
-      `http://127.0.0.1:8000/payments/get-balance/?property_number=${propertyNumber}`
+      `${API_BASE_URL}/payments/get-balance/?property_number=${propertyNumber}`
     );
     setBalance(parseFloat(res.data.balance) || 0);
   } catch (err) {
@@ -121,7 +122,7 @@ const fetchBalance = async (propertyNumber) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://127.0.0.1:8000/payments-collection/get_property_numbers/?block_name=${blockName}`
+        `${API_BASE_URL}/payments-collection/get_property_numbers/?block_name=${blockName}`
       );
       const formattedProperties = response.data.property_numbers.map((num) => ({
         id: num,
@@ -141,7 +142,7 @@ const fetchBalance = async (propertyNumber) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://127.0.0.1:8000/payments-collection/get_property_owner_or_tenant/?property_number=${propertyNumber}`
+        `${API_BASE_URL}/payments-collection/get_property_owner_or_tenant/?property_number=${propertyNumber}`
       );
       const { owners, tenant_name, bills_fields, monthly_rent } = response.data;
   
@@ -191,7 +192,7 @@ const fetchBalance = async (propertyNumber) => {
   const fetchPayments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://127.0.0.1:8000/payments-collection/');
+      const response = await axios.get(`${API_BASE_URL}/payments-collection/`);
       setPayments(response.data);
     } catch (error) {
       toast.error('Error fetching payments');
@@ -215,7 +216,7 @@ const handleSubmit = async (e) => {
 
     const billsFields = { ...charges };
 
-    await axios.post('http://127.0.0.1:8000/payments-collection/', {
+    await axios.post(`${API_BASE_URL}/payments-collection/`, {
       ...paymentData,
       bills_fields: billsFields,
       total_current_bills: totalCurrentBills,
@@ -266,7 +267,7 @@ const editPayment = async (id, updatedData) => {
     };
 
     const response = await axios.put(
-      `http://127.0.0.1:8000/payments-collection/${id}/`, 
+      `${API_BASE_URL}/payments-collection/${id}/`, 
       payload
     );
 
@@ -289,7 +290,7 @@ const editPayment = async (id, updatedData) => {
   const deletePayment = async (id) => {
     try {
       setLoading(true);
-      const response = await axios.delete(`http://127.0.0.1:8000/payments-collection/${id}/`);
+      const response = await axios.delete(`${API_BASE_URL}/payments-collection/${id}/`);
       if (response.status === 204) {
         setPayments((prevPayments) => prevPayments.filter((payment) => payment.id !== id));
         toast.success('Payment deleted successfully!');

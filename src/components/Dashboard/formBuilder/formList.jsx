@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Modal from "../modal";
 import Pagination from "../pagination";
+import API_BASE_URL from "../../../config";
 
 const FormsList = () => {
   const [forms, setForms] = useState([]);
@@ -27,7 +28,7 @@ const FormsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const API_URL = "http://127.0.0.1:8000/form-builder/";
+  const API_URL = `${API_BASE_URL}/form-builder/`;
 
   // Fetch forms
   const fetchForms = async () => {

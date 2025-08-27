@@ -4,6 +4,7 @@ import useMemberType from '../../../hooks/useMemberType';
 import Modal from '../modal';
 import Pagination from '../pagination';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ListMemberType = () => {
   const { memberTypes, deleteMemberType, editMemberType, loading, error } = useMemberType();

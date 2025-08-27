@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import PropertyIcon from "../../assets/images/room.png";
 import ownerIcon from "../../assets/images/owner.png";
@@ -7,8 +7,10 @@ import committeeIcon from "../../assets/images/comittee.png";
 import moneyIcon from "../../assets/images/fund.png";
 import pendingIcon from "../../assets/images/fair.png";
 import complaintIcon from "../../assets/images/chat-complain.png";
+import expenseIcon from "../../assets/images/fund.png"; // Using fund icon for expenses
 import { FaArrowRight } from "react-icons/fa6";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../config";
 
 
 const DashboardOverview = () => {
@@ -20,6 +22,7 @@ const DashboardOverview = () => {
     totalCollection: 0,
     pendingClearances: 0,
     totalComplaints: 0,
+    totalExpenses: 0,
     loading: true,
     error: null
   });
@@ -52,15 +55,17 @@ const DashboardOverview = () => {
       },
       { 
         id: "committees",
-        title: "All Committees", 
+        title: "Management Committee Members", 
         image: committeeIcon,
         value: dashboardData.totalCommittees,
         color: "bg-[#016F28]",
         link: "/dashboard/management-committee-list"
       },
+      
       { 
         id: "collection",
         title: "Total Collection", 
+        label: "Current Month",
         image: moneyIcon,
         value: dashboardData.totalCollection,
         color: "bg-[#016F28]",
@@ -69,10 +74,19 @@ const DashboardOverview = () => {
       { 
         id: "pending",
         title: "Pending Clearances", 
+        label: "Current Month",
         image: pendingIcon,
         value: dashboardData.pendingClearances,
         color: "bg-[#016F28]",
         link: "/dashboard/report-list"
+      },
+       { 
+        id: "Expenses",
+        title: "Expenses", 
+        image: expenseIcon,
+        value: 0,
+        color: "bg-[#016F28]",
+        link: "/dashboard/expense-list"
       },
       { 
         id: "complaints",
@@ -97,13 +111,13 @@ const DashboardOverview = () => {
           collectionRes,
           committesRes
         ] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/property_info/total/"),
-          axios.get("http://127.0.0.1:8000/owners/total/"),
-          axios.get("http://127.0.0.1:8000/tenant/total/"),
-          axios.get("http://127.0.0.1:8000/complaints/total/"),
-          axios.get("http://127.0.0.1:8000/payments-collection/pending_clearances/"),
-          axios.get("http://127.0.0.1:8000/payments-collection/total_received_amount_current_month/"),
-          axios.get("http://127.0.0.1:8000/management-committee/total/")
+          axios.get(`${API_BASE_URL}/property_info/total/`),
+          axios.get(`${API_BASE_URL}/owners/total/`),
+          axios.get(`${API_BASE_URL}/tenant/total/`),
+          axios.get(`${API_BASE_URL}/complaints/total/`),
+          axios.get(`${API_BASE_URL}/payments-collection/pending_clearances/`),
+          axios.get(`${API_BASE_URL}/payments-collection/total_received_amount_current_month/`),
+          axios.get(`${API_BASE_URL}/management-committee/total/`)
         ]);
 
         setDashboardData({
@@ -162,8 +176,13 @@ const DashboardOverview = () => {
           >
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-md ">{card.title}</p>
-                <p className="text-xl font-semibold mt-2">{card.value}</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-md font-medium">{card.title}</p>
+                 
+                </div>
+                <p className="text-[18px] font-semibold mt-2 whitespace-nowrap">
+                  {card.value}{card.label && <span className="text-[15px]"> ({card.label})</span>}
+                </p>
               </div>
               <img 
                 src={card.image} 

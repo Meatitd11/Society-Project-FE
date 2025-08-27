@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useAmenity from '../../../hooks/useAmenity';
 
 const AddAmenity = () => {

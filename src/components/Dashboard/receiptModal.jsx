@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import receiptLogo from '../../assets/images/reciept-logo.png';
 import html2pdf from 'html2pdf.js';
 import axios from 'axios';
+import API_BASE_URL from '../../config';
 
 const ReceiptModal = ({ paymentId, isOpen, onClose }) => {
   const [receipts, setReceipts] = useState([]);
@@ -11,7 +12,7 @@ const ReceiptModal = ({ paymentId, isOpen, onClose }) => {
   useEffect(() => {
     if (!isOpen || !paymentId) return;
 
-    fetch(`http://127.0.0.1:8000/payments-collection/${paymentId}/receipt_report/`)
+    fetch(`${API_BASE_URL}/payments-collection/${paymentId}/receipt_report/`)
       .then((res) => res.json())
       .then((data) => {
         setReceipts(data);
@@ -45,7 +46,7 @@ const ReceiptModal = ({ paymentId, isOpen, onClose }) => {
   const generatePDF = async (receipt) => {
     try {
       // Fetch the receipt data again to ensure we have the latest version
-      const response = await axios.get(`http://127.0.0.1:8000/payments-collection/${paymentId}/receipt_report/`);
+      const response = await axios.get(`${API_BASE_URL}/payments-collection/${paymentId}/receipt_report/`);
       const receiptData = response.data.find(r => r.recept_no === receipt.recept_no) || receipt;
 
       // Create the PDF content
@@ -180,7 +181,7 @@ const ReceiptModal = ({ paymentId, isOpen, onClose }) => {
   const printReceipt = async (receipt) => {
     try {
       // Fetch the receipt data again to ensure we have the latest version
-      const response = await axios.get(`http://127.0.0.1:8000/payments-collection/${paymentId}/receipt_report/`);
+      const response = await axios.get(`${API_BASE_URL}/payments-collection/${paymentId}/receipt_report/`);
       const receiptData = response.data.find(r => r.recept_no === receipt.recept_no) || receipt;
 
       const printWindow = window.open('', '_blank');

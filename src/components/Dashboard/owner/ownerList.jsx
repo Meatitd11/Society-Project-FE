@@ -3,6 +3,8 @@ import useOwner from '../../../hooks/useOwner';
 import Modal from '../modal';
 import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import API_BASE_URL from '../../../config';
 
 const OwnerList = () => {
   const { owners, deleteOwner, editOwner, fetchOwners, loading, error } = useOwner();
@@ -27,7 +29,7 @@ const OwnerList = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/owners/owner-property-numbers/');
+        const response = await fetch(`${API_BASE_URL}/owners/owner-property-numbers/`);
         const data = await response.json();
         setProperties(data);
       } catch (err) {
@@ -257,81 +259,103 @@ const OwnerList = () => {
                   <span className="ml-1">{getSortIcon('owner_name')}</span>
                 </div>
               </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_guardian_name')}>
                   <span>Owner Guardian Name</span>
                   <span className="ml-1">{getSortIcon('owner_guardian_name')}</span>
                 </div>
+              </th> */}
+                <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_guardian_name')}>
+                  <span>Property Number</span>
+                  <span className="ml-1">{getSortIcon('owner_guardian_name')}</span>
+                </div>
               </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_phone_number')}>
                   <span>Owner Phone Number</span>
                   <span className="ml-1">{getSortIcon('owner_phone_number')}</span>
                 </div>
+              </th> */}
+
+               <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_phone_number')}>
+                  <span>Block Name</span>
+                  <span className="ml-1">{getSortIcon('owner_phone_number')}</span>
+                </div>
               </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_email')}>
                   <span>Owner Email</span>
                   <span className="ml-1">{getSortIcon('owner_email')}</span>
                 </div>
-              </th>
+              </th> */}
               <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_membership_number')}>
-                  <span>Owner Memebership Number</span>
+                  <span>Memebership Number</span>
                   <span className="ml-1">{getSortIcon('owner_membership_number')}</span>
                 </div>
               </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_cnic')}>
                   <span>Owner CNIC</span>
                   <span className="ml-1">{getSortIcon('owner_cnic')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_address')}>
                   <span>Owner Address</span>
                   <span className="ml-1">{getSortIcon('owner_address')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_country')}>
                   <span>Owner Country</span>
                   <span className="ml-1">{getSortIcon('owner_country')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('owner_city')}>
                   <span>Owner City</span>
                   <span className="ml-1">{getSortIcon('owner_city')}</span>
                 </div>
-              </th>
+              </th> */}
               <th className="border text-start px-4 whitespace-nowrap py-2">Actions</th>
             </tr>
           </thead>
-          <tbody>
+        <tbody>
             {currentItems.length > 0 ? (
               currentItems.map((owner, index) => (
                 <tr key={owner.owner_id}>
                   <td className="border px-4 whitespace-nowrap py-2 ">{indexOfFirstItem + index + 1}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_name}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{Array.isArray(owner.properties) && owner.properties.length > 0 ? owner.properties.map(p => p.property_number).join(', ') : '-'}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{Array.isArray(owner.properties) && owner.properties.length > 0 ? owner.properties.map(p => p.block_name?.block_name || p.block_name || '-').join(', ') : '-'}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_membership_number}</td>
+                  {/* <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_name}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_guardian_name}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_phone_number}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_email}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_membership_number}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_cnic}</td>
+                     <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_membership_number}</td> */}
+                  
+                  {/* <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_email}</td> */}
+               
+                  {/* <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_cnic}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_address}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_country}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_city}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{owner.owner_city}</td> */}
+
+
                   <td className="border px-4 whitespace-nowrap py-2 ">
                     <button className='text-green-700 px-1' onClick={() => handleOpenViewModal(owner)}><FaEye /></button>
                     <button className='text-yellow-600 px-1' onClick={() => handleOpenEditModal(owner)}><FaEdit /></button>
                     <button className='text-red-700 px-1' onClick={() => handleOpenDeleteModal(owner)}><FaTrash /></button>
-                  </td>              
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="border px-4 py-2 text-center" colSpan="11">
+                <td className="border px-4 py-2 text-center" colSpan="7">
                   No owners found
                 </td>
               </tr>

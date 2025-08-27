@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useTenant from '../../../hooks/useTenant';
 import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
+import API_BASE_URL from '../../../config';
 
 const AddTenant = () => {
   const [tenantData, setTenantData] = useState({
@@ -36,7 +37,7 @@ const AddTenant = () => {
     const fetchProperties = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://127.0.0.1:8000/tenant/rented-property-numbers/');
+        const response = await fetch(`${API_BASE_URL}/tenant/rented-property-numbers/`);
         const data = await response.json();
         setProperties(data);
       } catch (err) {

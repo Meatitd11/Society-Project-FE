@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import { FaPlus, FaTrash } from "react-icons/fa";
+import API_BASE_URL from "../../../config";
 
 const FormBuilder = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const FormBuilder = () => {
     fields: []
   });
   const [newFieldLabel, setNewFieldLabel] = useState("");
-  const API_URL = "http://127.0.0.1:8000/form-builder/";
+  const API_URL = `${API_BASE_URL}/form-builder/`;
   const navigate = useNavigate();
 
   // Generate field name from label

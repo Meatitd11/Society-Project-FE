@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import useService from '../../../hooks/useService';
 import Modal from '../modal';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ServiceList = () => {
   const { services, deleteService, editService, loading, error } = useService();

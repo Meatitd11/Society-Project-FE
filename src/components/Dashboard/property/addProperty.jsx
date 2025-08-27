@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import useProperty from '../../../hooks/useProperty';
 import useBlock from '../../../hooks/useBlock';
@@ -8,6 +8,7 @@ import usePropertyType from '../../../hooks/usePropertyType';
 import useAreaType from '../../../hooks/useAreaType';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import API_BASE_URL from '../../../config';
 
 const AddProperty = () => {
   const [propertyData, setPropertyData] = useState({
@@ -55,7 +56,7 @@ const AddProperty = () => {
     fetchFloors();
     
     // Fetch currencies using axios
-    axios.get('http://127.0.0.1:8000/currency/')
+    axios.get(`${API_BASE_URL}/currency/`)
       .then(response => setCurrencies(response.data))
       .catch(error => console.error('Error fetching currencies:', error));
   }, []);

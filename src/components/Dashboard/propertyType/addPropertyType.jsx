@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import usePropertyType from '../../../hooks/usePropertyType';
 
 const AddPropertyType = () => {

@@ -2,11 +2,12 @@ import html2pdf from 'html2pdf.js';
 import receiptLogo from '../assets/images/reciept-logo.png';
 import barcode from '../assets/images/barcode.png';
 import axios from 'axios';
+import API_BASE_URL from '../config';
 
 export const generateReceiptPdf = async (payment) => {
   try {
     // Step 1: Fetch dynamic data from backend
-    const response = await axios.get(`http://127.0.0.1:8000/payments-collection/${payment.id}/receipt_report`);
+    const response = await axios.get(`${API_BASE_URL}/payments-collection/${payment.id}/receipt_report`);
     const data = response.data;
 
     // Step 2: Destructure values from fetched data

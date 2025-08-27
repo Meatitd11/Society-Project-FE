@@ -23,9 +23,6 @@ const Invoice = () => {
         <p className='text-[#351c7d]'><strong>Ph:</strong>  042-35140503, 0307-4229933</p>
       </div>
     </div>
-
-   
-
    
     <div className="flex  items-stretch gap-1 mb-3">
       <div className='border-2 border-gray-800 font-bold-gray-600 leading-4 text-[#351c7d] font-bold p-2 w-[30%]'>

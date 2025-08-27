@@ -1,5 +1,5 @@
 // src/components/dashboard/currency/AddCurrency.js
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useCurrency from '../../../hooks/useCurrency';
 import { useNavigate } from 'react-router-dom';
 

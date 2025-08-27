@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import useFine from '../../../hooks/useFine';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';

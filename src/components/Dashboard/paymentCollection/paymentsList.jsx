@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaEye, FaFileInvoiceDollar, FaFilePdf, FaReceipt, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import Modal from '../modal';
 import usePayments from '../../../hooks/usePayment';
@@ -10,6 +10,7 @@ import { generateInvoicePdf } from '../../../hooks/generateInvoicePdf';
 import { generateReceiptPdf } from '../../../hooks/generateReceiptPdf';
 import ReceiptModal from '../receiptModal';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../../../config';
 
 const PaymentsList = () => {
   const { 
@@ -81,7 +82,7 @@ const PaymentsList = () => {
 
   const fetchFinePercentage = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/fine-set/');
+      const response = await axios.get(`${API_BASE_URL}/fine-set/`);
       if (response.data.length > 0) {
         setFinePercentage(parseFloat(response.data[0].fine));
       }
@@ -172,8 +173,8 @@ const PaymentsList = () => {
 
     try {
       const endpoint = isRentalPayment(payment) 
-        ? `http://127.0.0.1:8000/get-current-partial-balance/?property_number=${payment.property_number}&rental=true`
-        : `http://127.0.0.1:8000/get-current-partial-balance/?property_number=${payment.property_number}`;
+        ? `${API_BASE_URL}/get-current-partial-balance/?property_number=${payment.property_number}&rental=true`
+        : `${API_BASE_URL}/get-current-partial-balance/?property_number=${payment.property_number}`;
       
       const response = await axios.get(endpoint);
       const currentBalance = parseFloat(response.data["after pay balance"]);
@@ -245,7 +246,7 @@ const PaymentsList = () => {
   
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/payments-collection/${selectedPayment.id}/pay_bill/`,
+        `${API_BASE_URL}/payments-collection/${selectedPayment.id}/pay_bill/`,
         {
           ...paymentData,
           received_amount: received,
@@ -317,7 +318,7 @@ const PaymentsList = () => {
   const fetchEditProperties = async (blockName) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/payments-collection/get_property_numbers/?block_name=${blockName}`
+        `${API_BASE_URL}/payments-collection/get_property_numbers/?block_name=${blockName}`
       );
       const formattedProperties = response.data.property_numbers.map((num) => ({
         id: num,
@@ -332,7 +333,7 @@ const PaymentsList = () => {
   const fetchEditName = async (propertyNumber) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/payments-collection/get_property_owner_or_tenant/?property_number=${propertyNumber}`
+        `${API_BASE_URL}/payments-collection/get_property_owner_or_tenant/?property_number=${propertyNumber}`
       );
       const { owner_name, tenant_name, bills_fields } = response.data;
       setEditablePayment(prev => ({

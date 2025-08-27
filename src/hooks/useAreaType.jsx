@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../config';
+import { toast } from 'react-toastify';
 
 const useAreaType = () => {
   const [areaTypes, setAreaTypes] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import Modal from '../modal';
 import useManagementCommittee from '../../../hooks/useManagementCommittee';
@@ -505,7 +505,7 @@ const ManagementCommitteeList = () => {
         {/* Delete Modal */}
         <Modal isVisible={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
           <h2 className="text-xl mb-4">Confirm Delete</h2>
-          <p>Are you sure you want to delete {selectedItem?.mc_name}?</p>
+          <p>Are you sure you want to delete "{selectedItem?.mc_name}"?</p>
         <button
           onClick={handleDeleteSubmit}
           className="mt-4 bg-red-500 text-white px-4 py-2 rounded-sm"

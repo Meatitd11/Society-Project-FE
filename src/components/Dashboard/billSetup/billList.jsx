@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../../../config';
 
 const BillList = () => {
   const [bills, setBills] = useState([]);
@@ -9,7 +10,7 @@ const BillList = () => {
   useEffect(() => {
     const fetchBills = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/bills-setup/');
+        const response = await axios.get(`${API_BASE_URL}/bills-setup/`);
         setBills(response.data);
         setError('');
       } catch (err) {

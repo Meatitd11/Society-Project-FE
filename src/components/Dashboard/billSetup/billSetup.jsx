@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaCirclePlus } from "react-icons/fa6";
@@ -6,6 +6,7 @@ import useAreaType from '../../../hooks/useAreaType';
 import usePropertyType from '../../../hooks/usePropertyType';
 import useProperty from '../../../hooks/useProperty';
 import useFloor from '../../../hooks/useFloor';
+import API_BASE_URL from '../../../config';
 
 const BillSetupForm = () => {
   // Main form data state
@@ -61,7 +62,7 @@ const BillSetupForm = () => {
 
   const fetchForms = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/form-builder');
+      const response = await axios.get(`${API_BASE_URL}/form-builder/`);
       setForms(response.data);
       if (response.data.length > 0) {
         setSelectedFormId(response.data[0].id);
@@ -74,7 +75,7 @@ const BillSetupForm = () => {
 
   const fetchFormFields = async (formId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/form-builder/${formId}`);
+      const response = await axios.get(`${API_BASE_URL}/form-builder/${formId}`);
       setFormFields(response.data.form_fields || []);
       // Initialize field values with 0
       const initialValues = response.data.form_fields?.reduce((acc, field) => {
@@ -97,8 +98,8 @@ const BillSetupForm = () => {
         ...(formData.floor_id && { floor: formData.floor_id }),
       };
 
-      const response = await axios.get('http://127.0.0.1:8000/bills-setup/', { params });
-      
+      const response = await axios.get(`${API_BASE_URL}/bills-setup/`, { params });
+
       if (response.data.length > 0) {
         const billData = response.data[0].form_data || {};
         setFieldValues(prev => ({
@@ -145,7 +146,7 @@ const BillSetupForm = () => {
 
     try {
       // Check for existing entry
-      const existingResponse = await axios.get('http://127.0.0.1:8000/bills-setup/', {
+      const existingResponse = await axios.get(`${API_BASE_URL}/bills-setup/`, {
         params: {
           property_type_name: formData.property_type_id,
           property_area: formData.property_area_id,
@@ -157,13 +158,13 @@ const BillSetupForm = () => {
       if (existingResponse.data.length > 0) {
         // Update existing
         await axios.put(
-          `http://127.0.0.1:8000/bills-setup/${existingResponse.data[0].bill_setup_id}/`,
+          `${API_BASE_URL}/bills-setup/${existingResponse.data[0].bill_setup_id}/`,
           payload
         );
         toast.success('Bill setup updated successfully');
       } else {
         // Create new
-        await axios.post('http://127.0.0.1:8000/bills-setup/', payload);
+        await axios.post(`${API_BASE_URL}/bills-setup/`, payload);
         toast.success('Bill setup created successfully');
       }
     } catch (error) {

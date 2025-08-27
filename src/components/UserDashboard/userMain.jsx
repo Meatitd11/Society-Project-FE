@@ -11,34 +11,14 @@ import {
   FaCaretRight, 
   FaChartLine, 
   FaThLarge, 
-  FaLayerGroup, 
-  FaBuilding, 
-  FaUserTie, 
-  FaUsers, 
-  FaTools, 
-  FaMapMarkedAlt, 
-  FaIdCard, 
-  FaMoneyBillWave, 
-  FaUsersCog, 
-  FaFileInvoiceDollar, 
-  FaWpforms, 
-  FaCreditCard, 
-  FaObjectGroup, 
   FaCommentDots, 
-  FaBalanceScale, 
-  FaFileAlt, 
-  FaSignOutAlt, 
-  FaUniversity, 
-  FaSwimmingPool, 
-  FaExchangeAlt,
-  FaCog 
+  FaSignOutAlt
 } from "react-icons/fa";
-import { BsCurrencyExchange } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import axios from "axios";
 import API_BASE_URL from "../../config";
 
-const Main = () => {
+const UserMain = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,215 +26,30 @@ const Main = () => {
   const [openSubDropdown, setOpenSubDropdown] = useState("");
   const [loadingLogout, setLoadingLogout] = useState(false);
 
-  // Menu items structure
+  // Menu items structure - Simplified to only show Dashboard, Billing, and Complaints
   const menuItems = useMemo(() => [
     // 1. Dashboard
-    { name: "Dashboard", icon: <FaChartLine />, path: "/dashboard" },
+    { name: "Dashboard", icon:<FaThLarge /> , path: "/user-dashboard" },
     
-    // 2. Blocks
+    // 2. Billing
     {
-      name: "Blocks",
-      icon: <FaThLarge />,
+      name: "Billing",
+      icon:<FaChartLine /> ,
       subItems: [
-        { name: "Block List", path: "/dashboard/block-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Block", path: "/dashboard/add-block", icon: <MdKeyboardDoubleArrowRight /> },
+        { name: "Billing Details", path: "/user-dashboard/billing-details", icon: <MdKeyboardDoubleArrowRight /> },
       ],
     },
 
-    // 3. Properties (with 5 sub-dropdowns)
-    {
-      name: "Properties",
-      icon: <FaBuilding />,
-      subItems: [
-        { name: "Property List", path: "/dashboard/property-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Property", path: "/dashboard/add-property", icon: <MdKeyboardDoubleArrowRight /> },
-        {
-          name: "Area Type",
-          icon: <FaUniversity />,
-          subItems: [
-            { name: "Area Type List", path: "/dashboard/area-type-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Area Type", path: "/dashboard/add-area-type", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Area Size",
-          icon: <FaMapMarkedAlt />,
-          subItems: [
-            { name: "Area Size List", path: "/dashboard/area-size-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Area Size", path: "/dashboard/add-area-size", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Unit Type",
-          icon: <FaBuilding />,
-          subItems: [
-            { name: "Unit Type List", path: "/dashboard/unit-type-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Unit Type", path: "/dashboard/add-unit-type", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Floors",
-          icon: <FaLayerGroup />,
-          subItems: [
-            { name: "Floor List", path: "/dashboard/floor-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Floor", path: "/dashboard/add-floor", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Amenity",
-          icon: <FaSwimmingPool />,
-          subItems: [
-            { name: "Amenity List", path: "/dashboard/amenity-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Amenity", path: "/dashboard/add-amenity", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-      ],
-    },
-
-    // 4. Property Transfer
-    {
-      name: "Property Transfer",
-      icon: <FaExchangeAlt />,
-      subItems: [
-        { name: "Property Transfer Form", path: "/dashboard/property-transfer", icon: <MdKeyboardDoubleArrowRight /> }
-      ],
-    },
-
-    // 5. Property Splitter
-    {
-      name: "Property Splitter",
-      icon: <FaObjectGroup />,
-      subItems: [
-        { name: "Plot Splitter Form", path: "/dashboard/plot-splitter", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-
-    // 6. Owner
-    {
-      name: "Owner",
-      icon: <FaUserTie />,
-      subItems: [
-        { name: "Owner List", path: "/dashboard/owner-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Owner", path: "/dashboard/add-owner", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-    
-    // 7. Tenant
-    {
-      name: "Tenant",
-      icon: <FaUsers />,
-      subItems: [
-        { name: "Tenant List", path: "/dashboard/tenant-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Tenant", path: "/dashboard/add-tenant", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-
-    // 8. Management Committee (with 1 sub-dropdown)
-    {
-      name: "Management Committee",
-      icon: <FaUsersCog />,
-      subItems: [
-        { name: "Management Committee List", path: "/dashboard/management-committee-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Management Committee", path: "/dashboard/add-management-committee", icon: <MdKeyboardDoubleArrowRight /> },
-        {
-          name: "Member Type",
-          icon: <FaIdCard />,
-          subItems: [
-            { name: "Member Type List", path: "/dashboard/member-type-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Member Type", path: "/dashboard/add-member-type", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-      ],
-    },
-
-    // 9. Payment Collection (with 5 sub-dropdowns)
-    {
-      name: "Payment Collection",
-      icon: <FaCreditCard />,
-      subItems: [
-        { name: "Payments List", path: "/dashboard/payments-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Payments", path: "/dashboard/add-payments", icon: <MdKeyboardDoubleArrowRight /> },
-        {
-          name: "Bill Setup",
-          icon: <FaFileInvoiceDollar />,
-          subItems: [
-            { name: "Bill Setup", path: "/dashboard/bill-setup", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Form Builder",
-          icon: <FaWpforms />,
-          subItems: [
-            { name: "Form List", path: "/dashboard/form-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Form", path: "/dashboard/add-form", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Maintenance Cost",
-          icon: <FaMoneyBillWave />,
-          subItems: [
-            { name: "Maintenance Cost List", path: "/dashboard/maintenance-cost-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Maintenance Cost", path: "/dashboard/add-maintenance-cost", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-        {
-          name: "Fine",
-          icon: <FaBalanceScale />,
-          subItems: [
-            { name: "Fine List", path: "/dashboard/fine-list", icon: <MdKeyboardDoubleArrowRight /> },
-            { name: "Add Fine", path: "/dashboard/add-fine", icon: <MdKeyboardDoubleArrowRight /> },
-          ],
-        },
-      ],
-    },
-
-    // 10. Reports
-    {
-      name: "Reports",
-      icon: <FaFileAlt />,
-      subItems: [
-        { name: "Report List", path: "/dashboard/report-list", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-
-    // 11. Complaints
+    // 3. Complaints
     {
       name: "Complaints",
       icon: <FaCommentDots />,
       subItems: [
-        { name: "Complaint List", path: "/dashboard/complaint-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Complaint", path: "/dashboard/add-complaint", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-
-    // 12. Settings (with 2 sub-dropdowns)
-    {
-      name: "Settings",
-      icon: <FaCog />,
-      subItems: [
-       {
-      name: "Currency",
-      icon: <BsCurrencyExchange />,
-      subItems: [
-        { name: "Currency List", path: "/dashboard/currency-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Currency", path: "/dashboard/add-currency", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-
-{
-      name: "Optional",
-      icon: <FaTools />,
-      subItems: [
-        { name: "Service List", path: "/dashboard/service-list", icon: <MdKeyboardDoubleArrowRight /> },
-        { name: "Add Service", path: "/dashboard/add-service", icon: <MdKeyboardDoubleArrowRight /> },
-      ],
-    },
-  
-       
+        { name: "All Complaints", path: "/user-dashboard/complaint-list", icon: <MdKeyboardDoubleArrowRight /> },
+        { name: "New Complaint", path: "/user-dashboard/add-complaint", icon: <MdKeyboardDoubleArrowRight /> },
       ],
     },
     
-  
   ], []);
 
   // Get current route name for header
@@ -273,7 +68,7 @@ const Main = () => {
         }
       }
     }
-    return "Dashboard";
+    return "User Dashboard";
   }, [location.pathname, menuItems]);
 
   // Auto-open parent dropdowns when route changes
@@ -458,4 +253,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default UserMain;

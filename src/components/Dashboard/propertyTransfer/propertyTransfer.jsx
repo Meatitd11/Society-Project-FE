@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import API_BASE_URL from '../../../config';
 
 const PropertyTransfer = () => {
   const [properties, setProperties] = useState([]);
@@ -11,7 +12,7 @@ const PropertyTransfer = () => {
   useEffect(() => {
     const fetchInitData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/property-transfer/init-data/');
+        const response = await axios.get(`${API_BASE_URL}/property-transfer/init-data/`);
         setProperties(response.data.properties || []);
         setOwners(response.data.owners || []);
       } catch (error) {
@@ -37,7 +38,7 @@ const PropertyTransfer = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/property-transfer/transfer/',
+        `${API_BASE_URL}/property-transfer/transfer/`,
         {
           property_id: parseInt(selectedProperty),
           new_owner_id: parseInt(newOwner),

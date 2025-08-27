@@ -1,52 +1,72 @@
 // hooks/useComplaint.js
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import API_BASE_URL from '../config';
 
 const useComplaint = () => {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-    const token = localStorage.getItem('token');
- 
-  
-  
-  
-
-  const fetchComplaints = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/complaints/`, {
-        headers: { Authorization: `Token ${token}` },
-      });
-      setComplaints(response.data);
-    } catch (err) {
-      toast.error('Failed to load complaints');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchComplaints();
+    // Simulate API delay
+    setTimeout(() => {
+      setComplaints([
+        {
+          id: 1,
+          title: "Water Supply Issue",
+          description: "Water supply has been irregular for the past week. Please fix this issue as soon as possible.",
+          email: "john.doe@example.com",
+          status: "pending",
+          created_at: "2025-01-15T10:30:00Z",
+          assigned_to: "Maintenance Team",
+          user_id: 1,
+          image: null
+        },
+        {
+          id: 2,
+          title: "Parking Space Problem",
+          description: "My designated parking space is being occupied by unauthorized vehicles daily.",
+          email: "john.doe@example.com", 
+          status: "in_progress",
+          created_at: "2025-02-20T14:45:00Z",
+          assigned_to: "Security Team",
+          user_id: 1,
+          image: null
+        },
+        {
+          id: 3,
+          title: "Noise Complaint",
+          description: "Excessive noise from the construction work happening in Block B during night hours.",
+          email: "john.doe@example.com",
+          status: "resolved",
+          created_at: "2025-03-10T09:15:00Z",
+          assigned_to: "Admin",
+          user_id: 1,
+          image: null
+        }
+      ]);
+      setLoading(false);
+    }, 500);
   }, []);
 
   const addComplaint = async (formData) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/complaints/`, formData, {
-        headers: { Authorization: `Token ${token}` },
-      });
+      // Simulate form data processing
+      const newComplaint = {
+        id: Date.now(), // Use timestamp for unique ID
+        title: formData.get('title'),
+        description: formData.get('description'),
+        email: formData.get('email'),
+        status: "pending",
+        created_at: new Date().toISOString(),
+        assigned_to: "Unassigned",
+        user_id: 1,
+        image: formData.get('image') ? URL.createObjectURL(formData.get('image')) : null
+      };
 
-      if (response.status === 201) {
-        setComplaints([...complaints, response.data]);
-        toast.success('Complaint added successfully');
-        return { success: true };
-      } else {
-        toast.error('Failed to add complaint');
-        return { success: false };
-      }
-    } catch (err) {
+      setComplaints(prevComplaints => [...prevComplaints, newComplaint]);
+      toast.success('Complaint added successfully');
+      return { success: true };
+    } catch {
       toast.error('Error adding complaint');
       return { success: false };
     }
@@ -54,19 +74,25 @@ const useComplaint = () => {
 
   const editComplaint = async (id, formData) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/complaints/${id}/`, formData, {
-        headers: { Authorization: `Token ${token}` },
-      });
+      // Simulate form data processing for edit
+      const updatedComplaint = {
+        id: id,
+        title: formData.get('title'),
+        description: formData.get('description'),
+        email: formData.get('email') || complaints.find(c => c.id === id)?.email,
+        status: formData.get('status'),
+        created_at: complaints.find(c => c.id === id)?.created_at || new Date().toISOString(),
+        assigned_to: "Admin",
+        user_id: 1,
+        image: formData.get('image') ? URL.createObjectURL(formData.get('image')) : complaints.find(c => c.id === id)?.image
+      };
 
-      if (response.status === 200) {
-        setComplaints(complaints.map(item => item.id === id ? response.data : item));
-        toast.success('Complaint updated successfully');
-        return { success: true };
-      } else {
-        toast.error('Failed to update complaint');
-        return { success: false };
-      }
-    } catch (err) {
+      setComplaints(prevComplaints => 
+        prevComplaints.map(item => item.id === id ? updatedComplaint : item)
+      );
+      toast.success('Complaint updated successfully');
+      return { success: true };
+    } catch {
       toast.error('Error updating complaint');
       return { success: false };
     }
@@ -74,19 +100,12 @@ const useComplaint = () => {
 
   const deleteComplaint = async (id) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/complaints/${id}/`, {
-        headers: { Authorization: `Token ${token}` },
-      });
-
-      if (response.status === 204) {
-        await fetchComplaints();
-        toast.success('Complaint deleted successfully');
-        return { success: true };
-      } else {
-        toast.error('Failed to delete complaint');
-        return { success: false };
-      }
-    } catch (err) {
+      setComplaints(prevComplaints => 
+        prevComplaints.filter(complaint => complaint.id !== id)
+      );
+      toast.success('Complaint deleted successfully');
+      return { success: true };
+    } catch {
       toast.error('Error deleting complaint');
       return { success: false };
     }
@@ -98,7 +117,6 @@ const useComplaint = () => {
     addComplaint,
     editComplaint,
     deleteComplaint,
-    fetchComplaints,
   };
 };
 

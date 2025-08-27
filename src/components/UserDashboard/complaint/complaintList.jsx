@@ -16,6 +16,7 @@ const ComplaintList = () => {
   const [editStatus, setEditStatus] = useState('');
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  const [editEmail, setEditEmail] = useState('');
   const [editImage, setEditImage] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -44,6 +45,7 @@ const ComplaintList = () => {
     setSelectedComplaint(complaint);
     setEditTitle(complaint.title);
     setEditDescription(complaint.description);
+    setEditEmail(complaint.email || '');
     setEditStatus(complaint.status);
     setIsEditModalOpen(true);
   };
@@ -63,6 +65,7 @@ const ComplaintList = () => {
       const formData = new FormData();
       formData.append('title', editTitle);
       formData.append('description', editDescription);
+      formData.append('email', editEmail);
       formData.append('status', editStatus);
       formData.append('user_id', selectedComplaint.user_id);
   
@@ -88,12 +91,12 @@ const ComplaintList = () => {
   return (
     <div className="py-5">
       <div className='flex justify-between mb-4 items-center'> 
-        <h1 className="text-2xl font-bold">Complian List</h1>
+        <h1 className="text-2xl font-bold">All Complaints</h1>
         <button 
-          onClick={() => navigate('/dashboard/add-complaint')}
+          onClick={() => navigate('/user-dashboard/add-complaint')}
           className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors"
         >
-          Add New Complian
+          New Complaint
         </button>
       </div>
       <table className="min-w-full text-sm text-gray-600 bg-white border-collapse border border-gray-200">
@@ -101,7 +104,9 @@ const ComplaintList = () => {
           <tr>
             <th className="border text-start px-4 py-2">#</th>
             <th className="border text-start px-4 py-2">Title</th>
+            <th className="border text-start px-4 py-2">Date</th>
             <th className="border text-start px-4 py-2">Status</th>
+            <th className="border text-start px-4 py-2">Assigned Complaint</th>
             <th className="border text-start px-4 py-2">Actions</th>
           </tr>
         </thead>
@@ -111,7 +116,11 @@ const ComplaintList = () => {
               <tr key={complaint.id}>
                 <td className="border px-4 py-2">{indexOfFirstItem + index + 1}</td>
                 <td className="border px-4 py-2">{complaint.title}</td>
+                <td className="border px-4 py-2">
+                  {complaint.created_at ? new Date(complaint.created_at).toLocaleDateString() : 'N/A'}
+                </td>
                 <td className="border px-4 py-2 capitalize">{complaint.status}</td>
+                <td className="border px-4 py-2">{complaint.assigned_to || 'Unassigned'}</td>
                 <td className="border px-4 py-2">
                   <div className="flex gap-2">
                     <FaEye onClick={() => handleOpenViewModal(complaint)} className="cursor-pointer text-green-600" />
@@ -123,7 +132,7 @@ const ComplaintList = () => {
             ))
           ) : (
             <tr>
-              <td className="border px-4 py-2 text-center" colSpan="4">
+              <td className="border px-4 py-2 text-center" colSpan="6">
                 No complaints found
               </td>
             </tr>
@@ -144,7 +153,10 @@ const ComplaintList = () => {
         <h2 className="text-xl mb-4">Complaint Details</h2>
         <p><strong>Title:</strong> {selectedComplaint?.title}</p>
         <p><strong>Description:</strong> {selectedComplaint?.description}</p>
+        <p><strong>Email:</strong> {selectedComplaint?.email}</p>
+        <p><strong>Date:</strong> {selectedComplaint?.created_at ? new Date(selectedComplaint.created_at).toLocaleDateString() : 'N/A'}</p>
         <p><strong>Status:</strong> {selectedComplaint?.status}</p>
+        <p><strong>Assigned To:</strong> {selectedComplaint?.assigned_to || 'Unassigned'}</p>
         <p><strong>User:</strong> {selectedComplaint?.user_id}</p>
         {selectedComplaint?.image && (
           <img src={selectedComplaint.image} alt="Complaint" className="mt-2 max-w-sm" />
@@ -156,19 +168,28 @@ const ComplaintList = () => {
         <h2 className="text-xl mb-4">Edit Complaint</h2>
         <input
           type="text"
+          placeholder="Title"
           value={editTitle}
           onChange={(e) => setEditTitle(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-sm mb-2"
         />
         <textarea
+          placeholder="Description"
           value={editDescription}
           onChange={(e) => setEditDescription(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-sm mb-2"
+        />
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={editEmail}
+          onChange={(e) => setEditEmail(e.target.value)}
           className="w-full px-4 py-2 border border-gray-300 rounded-sm mb-2"
         />
         <select
           value={editStatus}
           onChange={(e) => setEditStatus(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-sm"
+          className="w-full px-4 py-2 border border-gray-300 rounded-sm mb-2"
         >
           <option value="pending">Pending</option>
           <option value="in_progress">In Progress</option>
@@ -194,7 +215,7 @@ const ComplaintList = () => {
       {/* Delete Modal */}
       <Modal isVisible={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
         <h2 className="text-xl mb-4">Confirm Delete</h2>
-        <p>Are you sure you want to delete complaint titled "{selectedComplaint?.title}"?</p>
+        <p>Are you sure you want to delete complaint titled &ldquo;{selectedComplaint?.title}&rdquo;?</p>
         <button
           onClick={handleDeleteComplaint}
           className="mt-4 bg-red-600 text-white px-4 py-2 rounded-sm"

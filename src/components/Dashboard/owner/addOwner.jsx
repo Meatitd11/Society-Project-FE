@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useOwner from '../../../hooks/useOwner';
 import useProperty from '../../../hooks/useProperty';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../../../config';
+import { toast } from 'react-toastify';
 
 const AddOwner = () => {
   const [ownerData, setOwnerData] = useState({
@@ -34,7 +36,7 @@ const AddOwner = () => {
     const fetchProperties = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://127.0.0.1:8000/owners/owner-property-numbers/');
+        const response = await fetch(`${API_BASE_URL}/owners/owner-property-numbers/`);
         const data = await response.json();
         const updatedProperties = data.map(property => ({
           ...property,

@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import useTenant from '../../../hooks/useTenant';
 import Modal from '../modal';
 import { FaEdit, FaTrash, FaEye, FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import API_BASE_URL from '../../../config';
 
 const TenantList = () => {
   const { tenants, deleteTenant, editTenant, fetchTenants, loading, error } = useTenant();
@@ -27,10 +29,10 @@ const TenantList = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/tenant/rented-property-numbers/');
+        const response = await fetch(`${API_BASE_URL}/tenant/rented-property-numbers/`);
         const data = await response.json();
         setProperties(data);
-      } catch (err) {
+      } catch (error) {
         toast.error('Failed to load properties');
       }
     };
@@ -243,76 +245,96 @@ const TenantList = () => {
               </th>
               <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_name')}>
-                  <span>Tenant Name</span>
+                  <span>Name</span>
                   <span className="ml-1">{getSortIcon('tenant_name')}</span>
                 </div>
               </th>
               <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_name')}>
+                  <span>Property Number</span>
+                  <span className="ml-1">{getSortIcon('tenant_name')}</span>
+                </div>
+              </th>
+
+
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_guardian_name')}>
                   <span>Tenant Guardian Name</span>
                   <span className="ml-1">{getSortIcon('tenant_guardian_name')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_phone_number')}>
                   <span>Tenant Phone Number</span>
                   <span className="ml-1">{getSortIcon('tenant_phone_number')}</span>
                 </div>
+              </th> */}
+                 <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_name')}>
+                  <span>Block Name</span>
+                  <span className="ml-1">{getSortIcon('tenant_name')}</span>
+                </div>
               </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                 <th className="border text-start px-4 whitespace-nowrap py-2 ">
+                <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_name')}>
+                  <span>Rent</span>
+                  <span className="ml-1">{getSortIcon('tenant_name')}</span>
+                </div>
+              </th>
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_email')}>
                   <span>Tenant Email</span>
                   <span className="ml-1">{getSortIcon('tenant_email')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_cnic')}>
                   <span>Tenant CNIC</span>
                   <span className="ml-1">{getSortIcon('tenant_cnic')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_address')}>
                   <span>Tenant Address</span>
                   <span className="ml-1">{getSortIcon('tenant_address')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_city')}>
                   <span>Tenant City</span>
                   <span className="ml-1">{getSortIcon('tenant_city')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('tenant_country')}>
                   <span>Tenant Country</span>
                   <span className="ml-1">{getSortIcon('tenant_country')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('starting_date')}>
                   <span>Starting Date</span>
                   <span className="ml-1">{getSortIcon('starting_date')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('ending_agreement_date')}>
                   <span>Ending Agreement Date</span>
                   <span className="ml-1">{getSortIcon('ending_agreement_date')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('monthly_rent')}>
                   <span>Monthly Rent</span>
                   <span className="ml-1">{getSortIcon('monthly_rent')}</span>
                 </div>
-              </th>
-              <th className="border text-start px-4 whitespace-nowrap py-2 ">
+              </th> */}
+              {/* <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('security_payment')}>
                   <span>Security Payment</span>
                   <span className="ml-1">{getSortIcon('security_payment')}</span>
                 </div>
-              </th>
+              </th> */}
               <th className="border text-start px-4 whitespace-nowrap py-2 ">
                 <div className="flex items-center cursor-pointer" onClick={() => requestSort('other_monthly_utility_charges')}>
                   <span>Other Monthly Utility Charges</span>
@@ -328,7 +350,10 @@ const TenantList = () => {
                 <tr key={tenant.tenant_id}>
                   <td className="border px-4 whitespace-nowrap py-2 ">{indexOfFirstItem + index + 1}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_name}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_guardian_name}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.assign_property?.property_number || '-'}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.assign_property?.block_name?.block_name || '-'}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.monthly_rent}</td>
+                   {/* <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_guardian_name}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_phone_number}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_email}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.tenant_cnic}</td>
@@ -338,7 +363,8 @@ const TenantList = () => {
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.starting_date}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.ending_agreement_date}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.monthly_rent}</td>
-                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.security_payment}</td>
+                  <td className="border px-4 whitespace-nowrap py-2 ">{tenant.security_payment}</td> */}
+
                   <td className="border px-4 whitespace-nowrap py-2 ">{tenant.other_monthly_utility_charges}</td>
                   <td className="border px-4 whitespace-nowrap py-2 ">
                     <button className='text-green-700 px-1' onClick={() => handleOpenViewModal(tenant)}><FaEye /></button>
@@ -349,7 +375,7 @@ const TenantList = () => {
               ))
             ) : (
               <tr>
-                <td className="border px-4 py-2 text-center" colSpan="15">
+                <td className="border px-4 py-2 text-center" colSpan="7">
                   No tenants found
                 </td>
               </tr>

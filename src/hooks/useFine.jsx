@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../config';
 
 const useFine = () => {
   const [fines, setFines] = useState([]);
@@ -9,7 +10,7 @@ const useFine = () => {
   const fetchFines = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/fine-set/');
+      const response = await axios.get(`${API_BASE_URL}/fin-set/`);
       setFines(response.data);
       setError(null);
     } catch (err) {
@@ -25,7 +26,7 @@ const useFine = () => {
 
   const addFine = async (fineAmount) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/fine-set/', {
+      const response = await axios.post(`${API_BASE_URL}/fin-set/`, {
         fine: fineAmount
       });
       await fetchFines();
@@ -37,7 +38,7 @@ const useFine = () => {
 
   const editFine = async (id, fineAmount) => {
     try {
-      await axios.put(`http://127.0.0.1:8000/fine-set/${id}/`, {
+      await axios.put(`${API_BASE_URL}/fin-set/${id}/`, {
         fine: fineAmount
       });
       await fetchFines();
@@ -49,7 +50,7 @@ const useFine = () => {
 
   const deleteFine = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/fine-set/${id}/`);
+      await axios.delete(`${API_BASE_URL}/fin-set/${id}/`);
       await fetchFines();
       return { success: true, message: 'Fine deleted successfully!' };
     } catch (err) {
